@@ -14,6 +14,7 @@ bottle = "^0.12.18"
 peewee = "^3.13.1"
 gunicorn = "^20.0.4"
 bottle-tools = "^2019.12.22"
+htmlmin = "^0.1.12"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
