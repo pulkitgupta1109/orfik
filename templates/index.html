@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+{% endblock %}
+{% block body %}
+  <h1>Orfik</h1>
+  <div class='login_form'>
+    <form>
+      <input id='uname' placeholder='Public user name.'>
+      <input id='pwd' placeholder='Secret password.'>
+      <button id='login'>Login / Register</button>
+    </form>
+    <script>
+      document.getElementById('login').onclick = function (){
+        var uname = document.getElementById('uname').value;
+        var pwd = document.getElementById('pwd').value;
+        var hash = CryptoJS.MD5(uname + pwd).toString(CryptoJS.enc.Hex);
+        Cookies.set('orfikPlayer', hash);
+        window.location.reload();
+      }
+    </script>
+  </div>
+  <div class='begin_form'>
+    <p>The treasure hunt begins.</p>
+    {% include 'answer.html' %}
+  </div>
+  <script>
+    var hsh = Cookies.get('orfikPlayer');
+    if (hsh === undefined){
+      document.getElementById('login_form').style.display='block';
+      document.getElementById('begin_form').style.display='none';
+    }else{
+      document.getElementById('login_form').style.display='none';
+      document.getElementById('begin_form').style.display='block';
+    }
+  </script>
+{% endblock %}

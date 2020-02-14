@@ -1,0 +1,44 @@
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+{% endblock %}
+<input type='text' placeholder='orfik' id='answerbox'>
+<button id='submit'>Submit</button>
+<script>
+  var base = {{ api_base }};
+  var hsh = Cookies.get('orfikPlayer');
+  if (hsh === undefined){
+    window.location.href = '/';
+  }
+  // ----------------- ping dynamic server that a user has found a question
+  var data = JSON.stringify({'userHash': hsh, 'url': window.location.href});
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST", "{{ api_base}}/userFoundQuestion", true);
+  xmlhttp.setRequestHeader("Content-Type", "application/json");
+  xmlhttp.withCredentials = true;
+  xmlhttp.onreadystatechange = function(){
+  if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+      var dat = JSON.parse(xmlhttp.responseText);
+    }
+  }
+  xmlhttp.send(data);
+  // ----------------- what to do if a user submits an answer
+  document.getElementById('submit').onclick = function (){
+    var answer = document.getElementById('answerbox').value;
+    var hash = CryptoJS.MD5(answer).toString(CryptoJS.enc.Hex);
+    var url = '/' + hsh + '.html';
+    // ---- try to get the url with AJAX
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", url, true);
+    xmlhttp.withCredentials = true;
+    xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+        // looks like the answer is ok. Redirect the user to the new page.
+        window.location.href = url;
+      } else {
+        document.getElementById('answerbox').value = '';
+        alert('Try again');
+      }
+    }
+    xmlhttp.send();
+  }
+</script>
