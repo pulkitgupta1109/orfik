@@ -23,3 +23,9 @@ Orfik
         - We can now plot multiple lines denoting player positions in the contest throughout time for the leaderboard.
         - By default we can show the latest rankings.
         - End of the contest we have a nice video which shows how the contest progressed.
+
+
+
+```
+python -m orfik build
+```
