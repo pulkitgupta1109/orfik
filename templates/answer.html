@@ -24,7 +24,7 @@
   // ----------------- what to do if a user submits an answer
   document.getElementById('submit').onclick = function (){
     var answer = document.getElementById('answerbox').value;
-    var hash = CryptoJS.MD5(answer).toString(CryptoJS.enc.Hex);
+    var hash = CryptoJS.SHA512(answer).toString(CryptoJS.enc.Hex);
     var url = '/' + hsh + '.html';
     // ---- try to get the url with AJAX
     var xmlhttp = new XMLHttpRequest();
