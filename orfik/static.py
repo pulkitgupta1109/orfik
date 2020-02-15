@@ -25,3 +25,8 @@ def build(args):
                 fl.write(html)
         previous_hashes = [sha512(ans.encode()).hexdigest() for ans in q.answers]
     # ----------------
+    tpl = env.get_template("end.html")
+    html = htmlmin.minify(tpl.render())
+    for previous_hash in previous_hashes:
+        with open(target_dir / f"{previous_hash}.html", "w") as fl:
+            fl.write(html)
