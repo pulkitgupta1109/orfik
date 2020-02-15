@@ -12,6 +12,7 @@
         var pwd = document.getElementById('pwd').value;
         var hash = sha512(uname + pwd);
         Cookies.set('orfikPlayer', hash);
+        Cookies.set('orfikPlayerName', uname);
         window.location.reload();
       }
     </script>

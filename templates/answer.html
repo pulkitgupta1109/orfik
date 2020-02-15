@@ -2,12 +2,15 @@
 <button id='submit' class='button button-primary'>Submit</button>
 <script>
   // Check if the user is already logged in or not
-  var hsh = Cookies.get('orfikPlayer');
+  var userHash = Cookies.get('orfikPlayer');
+  var userName = Cookies.get('orfikPlayerName');
   if (isOnQuestionPage === true & hsh === undefined){
     window.location.href = '/';
   }
   // Ping api server telling it that a user has found a question.
-  var data = JSON.stringify({'userHash': hsh, 'url': window.location.href});
+  var data = JSON.stringify({'userHash': userHash,
+    'userName': userName,
+    'url': window.location.href});
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("POST", "{{ api_base}}/userFoundQuestion", true);
   xmlhttp.setRequestHeader("Content-Type", "application/json");
