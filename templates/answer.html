@@ -1,5 +1,7 @@
-<input type='text' placeholder='your answer' id='answerbox'>
-<button id='submit' class='button button-primary'>Submit</button>
+<form>
+  <input type='text' placeholder='orfik' id='answerbox'/>
+  <input type='submit' id='submit' value='Submit'/>
+</form>
 <script>
   // Check if the user is already logged in or not
   var hsh = Cookies.get('orfikPlayer');
@@ -20,6 +22,8 @@
   xmlhttp.send(data);
   // Things to do if a user submits an answer
   document.getElementById('submit').onclick = function (){
+    var progress = '→↘↓↙';
+    var index = 0;
     var answer = document.getElementById('answerbox').value;
     var hash = sha512(answer);
     var url = '/' + hash + '.html';
@@ -28,13 +32,17 @@
     xmlhttp.open("GET", url, true);
     xmlhttp.withCredentials = true;
     xmlhttp.onreadystatechange = function(){
+      document.getElementById('submit').value = progress[index];
+      index += 1;
       if (xmlhttp.readyState === 4){
-        if (xmlhttp.status === 200){
+        document.getElementById('submit').value = 'Submit';
+        if(xmlhttp.status === 200){
           window.location.href = url;
-        } else {
+        }else {
           document.getElementById('answerbox').value = '';
           alert('Try again');
         }
+      }
     }
     xmlhttp.send();
   }
