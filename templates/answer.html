@@ -1,7 +1,5 @@
-<form>
-  <input type='text' placeholder='orfik' id='answerbox'/>
-  <button id='submit' >Submit</button>
-</form>
+<input type='text' placeholder='orfik' id='answerbox'>
+<button id='submit' class='button button-primary'>Submit</button>
 <script>
   // Check if the user is already logged in or not
   var hsh = Cookies.get('orfikPlayer');
@@ -30,13 +28,14 @@
     xmlhttp.open("GET", url, true);
     xmlhttp.withCredentials = true;
     xmlhttp.onreadystatechange = function(){
-      if (xmlhttp.readyState == 4){
-        if(xmlhttp.status == 200){
-          window.location.href = url;
-        }else {
-          document.getElementById('answerbox').value = '';
-          alert('Try again');
-        }
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+        // looks like the answer is ok. Redirect the user to the new page.
+        window.location.href = url;
+      } 
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 404){
+        // warn them somehow that their answer was not ok and to keep trying.
+        document.getElementById('answerbox').value = '';
+        alert('Try again');
       }
     }
     xmlhttp.send();
