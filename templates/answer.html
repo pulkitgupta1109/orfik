@@ -28,12 +28,10 @@
     xmlhttp.open("GET", url, true);
     xmlhttp.withCredentials = true;
     xmlhttp.onreadystatechange = function(){
-      if (xmlhttp.readyState == 4){
-        if xmlhttp.status == 200){
-          // looks like the answer is ok. Redirect the user to the new page.
+      if (xmlhttp.readyState === 4){
+        if (xmlhttp.status === 200){
           window.location.href = url;
         } else {
-          // warn them somehow that their answer was not ok and to keep trying.
           document.getElementById('answerbox').value = '';
           alert('Try again');
         }
