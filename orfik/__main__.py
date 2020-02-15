@@ -1,6 +1,6 @@
 import os
 import argparse
-from orfik import static
+from orfik import static, dynamic
 
 parser = argparse.ArgumentParser()
 parser.add_argument("cmd")
@@ -12,3 +12,5 @@ args = parser.parse_args()
 if args.cmd == "build":
     os.makedirs(args.target_dir, exist_ok=True)
     static.build(args)
+elif args.cmd == "api":
+    dynamic.app.run()

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block body %}
+  <h1>Rankings</h1>
+  <table class='ui celled structured table'>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th></th>
+        <th>Questions solved</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody id='tbody'>
+    </tbody>
+  </table>
+  <script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", "{{ api_base }}/lb", true);
+    xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+        var ranks = JSON.parse(xmlhttp.responseText)['rankings'];
+        var rank = 0;
+        while(true){
+          rank += 1;
+          if(rank in ranks){
+            console.log(rank + 'in ranks');
+            var players = ranks[rank];
+            for(var i=0; i<players.length; ++i){
+              var row = document.createElement('tr');
+              var td1 = document.createElement('td');
+              var td2 = document.createElement('td');
+              var td3 = document.createElement('td');
+              var td4 = document.createElement('td');
+              td1.classList.add('one');
+              td1.classList.add('wide');
+              td1.classList.add('right');
+              td1.classList.add('align');
+              td2.classList.add('one');
+              td2.classList.add('wide');
+              td2.classList.add('left');
+              td2.classList.add('align');
+              td3.classList.add('one');
+              td3.classList.add('wide');
+              td3.classList.add('left');
+              td3.classList.add('align');
+              if(i === 0 & players.length > 1){
+                td1.setAttribute('rowspan', players.length);
+                td1.innerHTML = rank;
+                row.appendChild(td1);
+              } else if (players.length == 1){
+                td1.innerHTML = rank;
+                row.appendChild(td1);
+              }
+              td2.innerHTML = players[i]['userHash'];
+              td3.innerHTML = players[i]['questionsFound'];
+              td4.innerHTML = players[i]['userName'];
+              row.appendChild(td2);
+              row.appendChild(td3);
+              row.appendChild(td4);
+              document.getElementById('tbody').appendChild(row);
+            }
+          } else {
+            console.log(rank + 'not found');
+            break;
+          }
+        }
+      }
+    }
+    xmlhttp.send();
+  </script>
+{% endblock %}

@@ -26,7 +26,11 @@ def build(args):
         previous_hashes = [sha512(ans.encode()).hexdigest() for ans in q.answers]
     # ----------------
     tpl = env.get_template("end.html")
-    html = htmlmin.minify(tpl.render())
+    html = htmlmin.minify(tpl.render(api_base=args.api_base))
     for previous_hash in previous_hashes:
         with open(target_dir / f"{previous_hash}.html", "w") as fl:
             fl.write(html)
+    tpl = env.get_template("lb.html")
+    html = htmlmin.minify(tpl.render(api_base=args.api_base))
+    with open(target_dir / "lb.html", "w") as fl:
+        fl.write(html)
