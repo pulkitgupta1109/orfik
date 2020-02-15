@@ -22,7 +22,7 @@
   document.getElementById('submit').onclick = function (){
     var answer = document.getElementById('answerbox').value;
     var hash = sha512(answer);
-    var url = '/' + hsh + '.html';
+    var url = '/' + hash + '.html';
     // Try to get see if the url exists
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, true);
