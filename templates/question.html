@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block body %}
+  <script>var isOnQuestionPage=true; </script>
+  <p>{{ q.statement }}</p>
+  {% include 'answer.html' %}
+{% endblock %}

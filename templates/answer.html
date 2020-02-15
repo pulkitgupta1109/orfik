@@ -1,12 +1,9 @@
-{% block head %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
-{% endblock %}
 <input type='text' placeholder='orfik' id='answerbox'>
-<button id='submit'>Submit</button>
+<button id='submit' class='button button-primary'>Submit</button>
 <script>
   // Check if the user is already logged in or not
   var hsh = Cookies.get('orfikPlayer');
-  if (hsh === undefined){
+  if (isOnQuestionPage === true & hsh === undefined){
     window.location.href = '/';
   }
   // Ping api server telling it that a user has found a question.
@@ -24,7 +21,7 @@
   // Things to do if a user submits an answer
   document.getElementById('submit').onclick = function (){
     var answer = document.getElementById('answerbox').value;
-    var hash = CryptoJS.SHA512(answer).toString(CryptoJS.enc.Hex);
+    var hash = sha512(answer);
     var url = '/' + hsh + '.html';
     // Try to get see if the url exists
     var xmlhttp = new XMLHttpRequest();
