@@ -5,24 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Orfik</title> 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
     <script>{% include 'sha512.js' %}</script>
-    <style>html{font-family: sans-serif;</style>
+    <style>
+      html{font-family: sans-serif;}
+      .center { text-align: center; }
+    </style>
     {% block head %}
     {% endblock %}
+    <script>
+      // Check if the user is already logged in or not
+      var isOnQuestionPage = false;
+      var userHash = window.localStorage.getItem('orfikPlayer');
+      var userName = window.localStorage.getItem('orfikPlayerName');
+      if (isOnQuestionPage === true & userHash === null){
+        window.location.href = '/';
+      }
+    </script>
   </head>
   <body>
     <div class='container'>
       <div class='row'>
         <div class='col-md-3 col-sm-0'></div>
         <div class='col-md-6 col-sm-12'>
-          <h1>Orfik</h1>
+          <header class='sticky'>
+            <a href='/' class='logo'>Orfik</a>
+            <a href='#' id='useridentifier' class='button'>🕵️‍♂️</a>
+            <a href='/lb.html' class='button'>Scoreboard</a>
+            <a href='#' id='logout' class='button'>Logout</a>
+          </header>
           {% block body %}
           {% endblock %}
         </div>
         <div class='col-md-3 col-sm-0'></div>
       </div>
     </div>
+    <script>
+    console.log(userHash);
+    if (userHash !== null){
+      var uid = document.getElementById('useridentifier');
+      uid.innerHTML = userName;
+      uid.setAttribute('data-my-hash', userHash.slice(0,5));
+    }
+    document.getElementById('logout').onclick = function (){
+      window.localStorage.clear();
+      window.location.reload();
+    }
+    </script>
   </body>
 </html>

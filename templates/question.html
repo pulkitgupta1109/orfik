@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block body %}
-  <script>var isOnQuestionPage=true; </script>
+  <h2>Q:{{ q.number }}</h2>
+  <script>
+    var isOnQuestionPage=true;
+  </script>
   {% if q.image %}
     <img src='{{ q.image }}' />
   {% endif %}

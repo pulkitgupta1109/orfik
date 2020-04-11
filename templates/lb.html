@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% block body %}
-  <h1>Rankings</h1>
-  <table class='ui celled structured table'>
+  <h2 id='myRanking'>Rankings</h1>
+  <table class='striped'>
     <thead>
       <tr>
         <th>Rank</th>
-        <th></th>
+        <th>Player</th>
         <th>Questions solved</th>
-        <th>Name</th>
       </tr>
     </thead>
     <tbody id='tbody'>
@@ -20,6 +19,8 @@
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
         var ranks = JSON.parse(xmlhttp.responseText)['rankings'];
         var rank = 0;
+        var myrank = 0;
+        var myhash = userHash.slice(0, 5);
         while(true){
           rank += 1;
           if(rank in ranks){
@@ -30,33 +31,16 @@
               var td1 = document.createElement('td');
               var td2 = document.createElement('td');
               var td3 = document.createElement('td');
-              var td4 = document.createElement('td');
-              td1.classList.add('one');
-              td1.classList.add('wide');
-              td1.classList.add('right');
-              td1.classList.add('align');
-              td2.classList.add('one');
-              td2.classList.add('wide');
-              td2.classList.add('left');
-              td2.classList.add('align');
-              td3.classList.add('one');
-              td3.classList.add('wide');
-              td3.classList.add('left');
-              td3.classList.add('align');
-              if(i === 0 & players.length > 1){
-                td1.setAttribute('rowspan', players.length);
-                td1.innerHTML = rank;
-                row.appendChild(td1);
-              } else if (players.length == 1){
-                td1.innerHTML = rank;
-                row.appendChild(td1);
+              td2.setAttribute('data-player-hash', players[i]['userHash']);
+              if (players[i]['userHash'] === myhash){
+                document.getElementById('myRanking').innerHTML = 'Your rank: '+rank;
               }
-              td2.innerHTML = players[i]['userHash'];
+              td1.innerHTML = rank;
+              td2.innerHTML= players[i]['userName'];
               td3.innerHTML = players[i]['questionsFound'];
-              td4.innerHTML = players[i]['userName'];
+              row.appendChild(td1);
               row.appendChild(td2);
               row.appendChild(td3);
-              row.appendChild(td4);
               document.getElementById('tbody').appendChild(row);
             }
           } else {

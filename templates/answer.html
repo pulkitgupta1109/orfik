@@ -1,12 +1,9 @@
-<input type='text' placeholder='orfik' id='answerbox'>
-<button id='submit' class='button button-primary'>Submit</button>
+<div>
+  <span id='answer_marker' class="icon-edit"></span>
+  <input type='text' placeholder='{{ placeholder |default("your answer") }}' id='answerbox' autofocus>
+  <button id='submit' class='button button-primary'>Submit</button>
+</div>
 <script>
-  // Check if the user is already logged in or not
-  var userHash = Cookies.get('orfikPlayer');
-  var userName = Cookies.get('orfikPlayerName');
-  if (isOnQuestionPage === true & userHash === undefined){
-    window.location.href = '/';
-  }
   // Ping api server telling it that a user has found a question.
   var data = JSON.stringify({'userHash': userHash,
     'userName': userName,
@@ -36,9 +33,18 @@
       if (xmlhttp.readyState == 4 && xmlhttp.status == 404){
         // warn them somehow that their answer was not ok and to keep trying.
         document.getElementById('answerbox').value = '';
-        alert('Try again');
+        var marker = document.getElementById('answer_marker');
+        marker.classList.remove('icon-edit');
+        marker.classList.add('icon-alert');
       }
     }
     xmlhttp.send();
   }
+document.getElementById("answerbox")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("submit").click();
+    }
+});
 </script>

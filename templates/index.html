@@ -3,27 +3,30 @@
   <div id='login_form' style='display:none'>
     {% include 'login.html' %}
     <script>
-      var isOnQuestionPage = false;
       document.getElementById('login').onclick = function (){
         var uname = document.getElementById('uname').value;
         var pwd = document.getElementById('pwd').value;
         var hash = sha512(uname + pwd);
-        Cookies.set('orfikPlayer', hash);
-        Cookies.set('orfikPlayerName', uname);
+        window.localStorage.setItem('orfikPlayer', hash);
+        window.localStorage.setItem('orfikPlayerName', uname);
         window.location.reload();
       }
     </script>
   </div>
   <div id='begin_form' style='display:none'>
-    <p>The treasure hunt begins.</p>
-    {% include 'answer.html' %}
+    <p>The treasure hunt begins. Name the hunt!</p>
+    {% with placeholder='orfik' %}
+      {% include 'answer.html' %}
+    {% endwith %}
   </div>
   <script>
-    var hsh = Cookies.get('orfikPlayer');
-    if (hsh === undefined){
+    var hsh = window.localStorage.getItem('orfikPlayer');
+    if (hsh === null){
       document.getElementById('login_form').style.display='block';
       document.getElementById('begin_form').style.display='none';
+      document.getElementById('logout').style.display='none';
     }else{
+      document.getElementById('logout').style.display='inline-block';
       document.getElementById('login_form').style.display='none';
       document.getElementById('begin_form').style.display='block';
     }

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import htmlmin
 from jinja2 import Environment, FileSystemLoader, Template
-from orfik.questions import get_questions
+from orfik.questions import get_questions, Question
 
 
 def build(args):
@@ -19,6 +19,13 @@ def build(args):
     previous_hashes = [sha512("orfik".encode()).hexdigest()]
     for q in get_questions():
         print("Question:", q)
+        if q.image:
+            ext = q.image.name.split(".")[-1]
+            image_path = target_dir / f"{previous_hash}.{ext}"
+            with open(image_path, "wb") as fl:
+                with open(q.image, "rb") as im:
+                    fl.write(im.read())
+            q = Question(q.number, q.statement, Path(image_path).name, q.answers)
         tpl = env.get_template("question.html")
         html = htmlmin.minify(tpl.render(q=q, api_base=args.api_base))
         for previous_hash in previous_hashes:
