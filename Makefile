@@ -5,3 +5,4 @@ release:
 	cp .netlify.runtime.txt runtime.txt
 	git add runtime.txt
 	git commit -m 'netlify deploy'
+	git push origin master
