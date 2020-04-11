@@ -10,7 +10,7 @@ from playhouse.db_url import connect
 db_url = os.environ.get("DATABASE_URL", "sqlite:///data.sqlite3")
 protocol, db_url = db_url.split("://", 1)
 if protocol == "postgres":
-    protocol = protocol + "+pool"
+    protocol += "+pool"
 db_url = protocol + "://" + db_url
 db = connect(db_url)
 
