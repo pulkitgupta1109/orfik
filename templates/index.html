@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
-  <h1>Orfik</h1>
   <div id='login_form' style='display:none'>
-      <input id='uname' placeholder='Public user name.'>
-      <input id='pwd' placeholder='Secret password.'>
-      <button id='login' class='button button-primary'>Login / Register</button>
+    {% include 'login.html' %}
     <script>
       var isOnQuestionPage = false;
       document.getElementById('login').onclick = function (){

@@ -370,6 +370,18 @@ version = "1.14.0"
 
 [[package]]
 category = "main"
+description = ""
+name = "staticsite"
+optional = false
+python-versions = ">=3.6"
+version = "2020.1.10.post2"
+
+[package.dependencies]
+htmlmin = "*"
+jinja2 = "*"
+
+[[package]]
+category = "main"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
@@ -432,7 +444,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "416dea0828a7a448db336ec2c078a3d1cce006d764ba449866f0dcab3bbc4af0"
+content-hash = "308a2e111b751c70ad94c0646e3e6c61c7d9fdedcefc4650dfdb2f12e7a98492"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -616,6 +628,9 @@ regex = [
 six = [
     {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
     {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
+]
+staticsite = [
+    {file = "staticsite-2020.1.10.post2.tar.gz", hash = "sha256:7fa309860430acbe694efde95de576864d835aa2066e7da9f6a1ae07dbf52612"},
 ]
 toml = [
     {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
