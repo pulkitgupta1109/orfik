@@ -7,7 +7,7 @@ import bottle_tools as bt
 from playhouse.db_url import connect
 
 
-dburl = os.environ.get("DATABASE_URL", "sqlite:///data.sqlite3")
+db_url = os.environ.get("DATABASE_URL", "sqlite:///data.sqlite3")
 protocol, db_url = db_url.split("://", 1)
 db_url = protocol + "pool" + "://" + db_url
 db = connect(db_url)
