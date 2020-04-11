@@ -9,7 +9,9 @@ from playhouse.db_url import connect
 
 db_url = os.environ.get("DATABASE_URL", "sqlite:///data.sqlite3")
 protocol, db_url = db_url.split("://", 1)
-db_url = protocol + "pool" + "://" + db_url
+if protocol == "postgres":
+    protocol += "+pool"
+db_url = protocol + "://" + db_url
 db = connect(db_url)
 
 
@@ -28,12 +30,12 @@ with db:
 app = bottle.Bottle()
 
 
-@hook("before_request")
+@app.hook("before_request")
 def _connect_db():
     db.connect()
 
 
-@hook("after_request")
+@app.hook("after_request")
 def _close_db():
     if not db.is_closed():
         db.close()
