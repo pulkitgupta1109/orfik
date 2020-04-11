@@ -1,10 +1,16 @@
+import os
 import bottle
 from collections import defaultdict
 from datetime import datetime
 import peewee as pw
 import bottle_tools as bt
+from playhouse.db_url import connect
 
-db = pw.SqliteDatabase("data.sqlite3", pragmas={"journal_mode": "off"})
+
+dburl = os.environ.get("DATABASE_URL", "sqlite:///data.sqlite3")
+protocol, db_url = db_url.split("://", 1)
+db_url = protocol + "pool" + "://" + db_url
+db = connect(db_url)
 
 
 class Visit(pw.Model):
@@ -17,9 +23,20 @@ class Visit(pw.Model):
         database = db
 
 
-db.connect()
-db.create_tables([Visit])
+with db:
+    db.create_tables([Visit])
 app = bottle.Bottle()
+
+
+@hook("before_request")
+def _connect_db():
+    db.connect()
+
+
+@hook("after_request")
+def _close_db():
+    if not db.is_closed():
+        db.close()
 
 
 @app.post("/userFoundQuestion")
