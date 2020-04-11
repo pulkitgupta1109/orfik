@@ -27,5 +27,8 @@ Orfik
 
 
 ```
+# To build the site in the "public" folder.
 python -m orfik build
+# To run the API
+python -m orfik api
 ```
