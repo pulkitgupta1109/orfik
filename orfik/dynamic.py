@@ -50,14 +50,28 @@ def user_found_question(userHash: str, userName: str, url: str):
 
 @app.get("/lb")
 def get_lb_details():
-    cursor = db.execute_sql(
-        """
+    sql = """
     select username, userhash, count(distinct url) as q_found, group_concat(timestamp)
     from visit
     group by userhash
     order by count(distinct url) desc, max(timestamp)
     """
-    )
+    if "postgres" in protocol:
+        sql = """
+        select
+          array_agg(distinct username),
+          userhash,
+          count(distinct url) as q  _found,
+          array_agg(timestamp)
+        from
+          visit
+        group by
+          userhash
+        order by
+          count(distinct url) desc,
+          max(timestamp)
+        """
+    cursor = db.execute_sql(sql)
     ranks = defaultdict(list)
     current_rank, last_qf = 0, float("inf")
     for name, hsh, qf, ts in cursor:
@@ -66,10 +80,10 @@ def get_lb_details():
             last_qf = qf
         ranks[current_rank].append(
             {
-                "userName": name,
+                "userName": list(name[0]),
                 "userHash": hsh[:5],
                 "questionsFound": qf,
-                "timestamps": ts,
+                "timestamps": list(ts),
             }
         )
     return {"rankings": ranks}
