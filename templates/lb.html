@@ -20,7 +20,10 @@
         var ranks = JSON.parse(xmlhttp.responseText)['rankings'];
         var rank = 0;
         var myrank = 0;
-        var myhash = userHash.slice(0, 5);
+        var myhash = '';
+        if (userHash !== null ){
+          myhash = userHash.slice(0, 5);
+        }
         while(true){
           rank += 1;
           if(rank in ranks){
