@@ -73,7 +73,7 @@ def get_lb_details():
             last_qf = qf
         ranks[current_rank].append(
             {
-                "userName": list(name[0]),
+                "userName": name[0],
                 "userHash": hsh[:5],
                 "questionsFound": qf,
                 "timestamps": [str(t) for t in ts],
