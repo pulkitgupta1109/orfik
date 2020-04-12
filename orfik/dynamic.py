@@ -61,7 +61,7 @@ def get_lb_details():
         select
           array_agg(distinct username),
           userhash,
-          count(distinct url) as q  _found,
+          count(distinct url) as q_found,
           array_agg(timestamp)
         from
           visit
