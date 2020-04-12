@@ -1,6 +1,6 @@
 import os
 import argparse
-from orfik import static, dynamic, questions
+from orfik import static, dynamic, questions, database
 
 parser = argparse.ArgumentParser()
 parser.add_argument("cmd")
@@ -16,4 +16,5 @@ if args.cmd == "build":
     os.makedirs(args.target_dir, exist_ok=True)
     static.build(args)
 elif args.cmd == "api":
-    dynamic.app.run(host="0.0.0.0", port=args.port)
+    app = dynamic.build_app(database.build_db(os.environ.get("DATABASE_URL")))
+    app.run(host="0.0.0.0", port=args.port)
