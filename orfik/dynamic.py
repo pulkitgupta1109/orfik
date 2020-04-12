@@ -7,7 +7,7 @@ import bottle_tools as bt
 from playhouse.db_url import connect
 
 
-db_url = os.environ.get("DATABASE_URL", "sqlite:///data.sqlite3")
+db_url = os.environ.get("DATABASE_URL")
 protocol, db_url = db_url.split("://", 1)
 if protocol == "postgres":
     protocol += "+pool"
@@ -51,26 +51,19 @@ def user_found_question(userHash: str, userName: str, url: str):
 @app.get("/lb")
 def get_lb_details():
     sql = """
-    select username, userhash, count(distinct url) as q_found, group_concat(timestamp)
-    from visit
-    group by userhash
-    order by count(distinct url) desc, max(timestamp)
+    select
+      array_agg(distinct username),
+      userhash,
+      count(distinct url) as q_found,
+      array_agg(timestamp)
+    from
+      visit
+    group by
+      userhash
+    order by
+      count(distinct url) desc,
+      max(timestamp)
     """
-    if "postgres" in protocol:
-        sql = """
-        select
-          array_agg(distinct username),
-          userhash,
-          count(distinct url) as q_found,
-          array_agg(timestamp)
-        from
-          visit
-        group by
-          userhash
-        order by
-          count(distinct url) desc,
-          max(timestamp)
-        """
     cursor = db.execute_sql(sql)
     ranks = defaultdict(list)
     current_rank, last_qf = 0, float("inf")
@@ -83,7 +76,7 @@ def get_lb_details():
                 "userName": list(name[0]),
                 "userHash": hsh[:5],
                 "questionsFound": qf,
-                "timestamps": list(ts),
+                "timestamps": [str(t) for t in ts],
             }
         )
     return {"rankings": ranks}
